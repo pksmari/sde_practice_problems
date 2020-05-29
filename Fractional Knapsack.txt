@@ -1,0 +1,58 @@
+#include <stdio.h>
+void swap1(float *xp, float *yp) 
+{ 
+    float temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+}
+void swap(int *xp, int *yp) 
+{ 
+    int temp = *xp; 
+    *xp = *yp; 
+    *yp = temp; 
+} 
+void sort(int n,int p[],int it[],int w[],float r[]){
+    int i,j;
+    for(i=0;i<n-1;i++){
+        for(j=0;j<n-i-1;j++){
+            if(r[j]<r[j+1]){
+                swap1(&r[j],&r[j+1]);
+                swap(&p[j],&p[j+1]);
+                swap(&w[j],&w[j+1]);
+                swap(&it[j],&it[j+1]);
+            }
+        }
+    }
+}
+void fractionalknapsack(int n,int c,int items[],int profit[],int weight[]){
+    float maxprofit=0.0;
+    int i;
+    for(i=0;i<n;i++){
+        if(weight[i]<=c){
+            c-=weight[i];
+            maxprofit+=profit[i];
+        }
+        else{
+            maxprofit+=(profit[i]*(float)c/weight[i]);
+            break;
+        }
+    }
+    printf("max profit = %f",maxprofit);
+}
+int main()
+{
+    int n,capacity,i;
+    printf("Capacity : ");
+    scanf("%d",&capacity);
+    printf("Size of array : ");
+    scanf("%d",&n);
+    int items[n],profit[n],weight[n];
+    printf("item  profit weight\n");
+    for(i=0;i<n;i++)
+        scanf("%d%d%d",&items[i],&profit[i],&weight[i]);
+    float ratio[n];
+    for(i=0;i<n;i++)
+        ratio[i]=(float)profit[i]/weight[i];
+    sort(n,profit,items,weight,ratio);//sort in descending order with respect to ratio;
+    fractionalknapsack(n,capacity,items,profit,weight);
+}
